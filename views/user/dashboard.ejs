@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        table {
+            margin: 0 auto; /* Centers the table */
+            border-collapse: collapse; /* Ensures borders are merged together */
+        }
+        th, td {
+            border: 1px solid black; /* Adds border to table cells */
+            padding: 8px; /* Adds padding inside table cells */
+            text-align: left; /* Aligns text to the left */
+        }
+        th {
+            background-color: #f2f2f2; /* Light gray background for table headers */
+        }
+    </style>
+</head>
+<body>
+    <%- include("./header") %>
+
+<h2>Welcome, <%= user.name %></h2>
+<a href="/user/logout" style="color: red;">Logout</a> <!-- Logout Link -->
+<h3>Your Tasks</h3>
+<table>
+    <tr>
+        <th>Title</th>
+        <th>Due Date</th>
+        <th>Status</th>
+        <th>Image</th>
+        <th>Action</th>
+        <th>Download</th> <!-- New column for download button -->
+    </tr>
+    <% tasks.forEach(task => { %>
+    <tr>
+        <td><%= task.title %></td>
+        <td><%= task.dueDate %></td>
+        <td><%= task.status %></td>
+        <td>
+            <% if (task.image) { %>
+                <img src="/uploads/<%= task.image %>" alt="Task Image" width="100">
+            <% } else { %>
+                No Image
+            <% } %>
+        </td>
+        <td>
+            <form action="/user/task/delete/<%= task._id %>" method="POST">
+                <button type="submit">Delete</button>
+            </form>
+        </td>
+        <td>
+            <a href="/user/task/download/<%= task._id %>" download>Download PDF</a> <!-- Download button -->
+        </td>
+    </tr>
+    <% }) %>
+</table>
+
+<h3>Add New Task</h3>
+<form action="/user/task/add" method="POST" enctype="multipart/form-data">
+    <input type="text" name="title" placeholder="Task Title" required>
+    <textarea name="description" placeholder="Task Description"></textarea>
+    <input type="date" name="dueDate" required>
+    <input type="file" name="image" accept="image/*"> <!-- Image Upload -->
+    <button type="submit">Add Task</button>
+</form>
+
+<%- include("./footer") %>
+
+</body>
+</html>

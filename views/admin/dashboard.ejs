@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <style>
+        table {
+            margin: 0 auto; /* Centers the table */
+            border-collapse: collapse; /* Ensures borders are merged together */
+        }
+        th, td {
+            border: 1px solid black; /* Adds border to table cells */
+            padding: 8px; /* Adds padding inside table cells */
+            text-align: left; /* Aligns text to the left */
+        }
+        th {
+            background-color: #f2f2f2; /* Light gray background for table headers */
+        }
+    </style>
+</head>
+<body>
+ 
+    <h2>Admin Dashboard</h2>
+    <a href="/admin/logout">Logout</a>
+    
+    <h3>Create New User</h3>
+    <form action="/admin/user/create" method="POST">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Create User</button>
+    </form>
+    
+    <h3>All Users</h3>
+    <table border="1">
+        <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+        <% users.forEach(user => { %>
+            <tr>
+                <td><%= user.name %></td>
+                <td><%= user.email %></td>
+                <td>
+                    <a href="/admin/user/edit/<%= user._id %>">Edit</a>
+                    <form action="/admin/user/delete/<%= user._id %>" method="POST" style="display:inline;">
+                        <button type="submit" onclick="return confirm('Delete user?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        <% }) %>
+    </table>
+    
+    
+<%- include("./footer") %>
+</body>
+</html>
