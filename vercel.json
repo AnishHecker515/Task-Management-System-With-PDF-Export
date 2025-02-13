@@ -1,5 +1,5 @@
 {
-    "vercel": 2,
+    "vercel": 1,
     "builds": [
         {
             "src": "index.js",
